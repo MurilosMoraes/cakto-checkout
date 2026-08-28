@@ -12,6 +12,14 @@ interface OrderSuccessProps {
   quote: Quote;
 }
 
+function installmentSummary(quote: Quote): string {
+  const base = `Cartão ${quote.installments}x de ${formatBRL(quote.installmentAmount)}`;
+
+  return quote.hasUnevenInstallments
+    ? `${base} (1ª de ${formatBRL(quote.firstInstallmentAmount)})`
+    : base;
+}
+
 export function OrderSuccess({ orderId, email, productName, quote }: OrderSuccessProps) {
   const isInstallment = quote.method === "card" && quote.installments > 1;
 
@@ -62,7 +70,7 @@ export function OrderSuccess({ orderId, email, productName, quote }: OrderSucces
               {quote.method === "pix"
                 ? "PIX"
                 : isInstallment
-                  ? `Cartão ${quote.installments}x de ${formatBRL(quote.installmentAmount)}`
+                  ? installmentSummary(quote)
                   : "Cartão à vista"}
             </dd>
           </div>
