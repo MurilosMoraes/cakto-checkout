@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, type Ref } from "react";
+import type { Ref } from "react";
 import { TextField } from "@/components/ui/TextField";
 
 interface BuyerFieldsProps {
@@ -16,7 +16,7 @@ interface BuyerFieldsProps {
   cpfRef?: Ref<HTMLInputElement>;
 }
 
-function BuyerFieldsImpl({
+export function BuyerFields({
   email,
   cpf,
   emailError,
@@ -58,5 +58,3 @@ function BuyerFieldsImpl({
     </div>
   );
 }
-
-export const BuyerFields = memo(BuyerFieldsImpl);
