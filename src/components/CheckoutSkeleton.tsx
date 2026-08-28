@@ -60,7 +60,6 @@ export function CheckoutSkeleton() {
       </Card>
 
       <Block className="h-14 w-full rounded-xl" />
-      <span className="sr-only">Carregando checkout</span>
     </div>
   );
 }

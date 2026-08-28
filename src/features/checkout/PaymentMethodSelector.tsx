@@ -15,7 +15,7 @@ const CARD_BASE =
   "text-sm font-semibold transition-all duration-150 " +
   "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand-600";
 
-const CARD_SELECTED = "border-brand-500 bg-brand-500 text-white shadow-lg";
+const CARD_SELECTED = "border-brand-600 bg-brand-600 text-white shadow-lg";
 const CARD_IDLE = "border-hairline bg-surface text-muted shadow-sm hover:shadow-md";
 
 function PaymentMethodSelectorImpl({ value, onChange }: PaymentMethodSelectorProps) {
@@ -37,7 +37,7 @@ function PaymentMethodSelectorImpl({ value, onChange }: PaymentMethodSelectorPro
             className="peer sr-only"
           />
           <div className={cn(CARD_BASE, isPix ? CARD_SELECTED : CARD_IDLE)}>
-            <span className="absolute -top-2.5 rounded-full bg-brand-700 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+            <span aria-hidden="true" className="absolute -top-2.5 rounded-full bg-brand-700 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
               Recomendado
             </span>
             <PixIcon className="size-6" />

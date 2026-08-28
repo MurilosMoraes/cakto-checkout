@@ -19,10 +19,10 @@ export function Button({
       disabled={disabled || isLoading}
       aria-busy={isLoading}
       className={cn(
-        "inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-500 px-5 py-4 text-base font-semibold text-white",
-        "transition-colors duration-150 hover:bg-brand-600 active:bg-brand-700",
+        "inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-4 text-base font-semibold text-white",
+        "transition-colors duration-150 hover:bg-brand-700 active:bg-brand-700",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
-        "disabled:cursor-not-allowed disabled:bg-brand-500/45",
+        isLoading ? "cursor-wait" : "disabled:cursor-not-allowed disabled:bg-muted",
         className,
       )}
     >

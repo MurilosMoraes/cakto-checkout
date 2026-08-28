@@ -20,7 +20,7 @@ export function OrderSuccess({ orderId, email, productName, quote }: OrderSucces
       aria-labelledby="order-success-title"
       className="mx-auto flex w-full max-w-lg flex-col gap-4 px-4 py-6"
     >
-      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-brand-400 to-brand-700 px-6 py-9 text-center text-white">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-brand-600 to-brand-700 px-6 py-9 text-center text-white">
         <Image
           src="/cakto-logo.png"
           alt=""
@@ -42,7 +42,7 @@ export function OrderSuccess({ orderId, email, productName, quote }: OrderSucces
         <h1 id="order-success-title" className="relative mt-5 text-2xl font-bold">
           Compra confirmada
         </h1>
-        <p className="relative mt-2 text-pretty text-sm leading-relaxed text-white/85">
+        <p className="relative mt-2 text-pretty text-sm leading-relaxed text-white/90">
           Enviamos o acesso para{" "}
           <strong className="font-semibold text-white">{email}</strong>
         </p>
