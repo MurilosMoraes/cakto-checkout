@@ -1,9 +1,14 @@
 "use client";
 
 import { useCallback, useMemo, useReducer } from "react";
-import { maskCPF } from "@/domain/cpf";
+import { maskCPF, stripCPF } from "@/domain/cpf";
 import type { Cents } from "@/domain/money";
-import { quote, type PaymentMethod, type Quote } from "@/domain/pricing";
+import {
+  MIN_INSTALLMENTS,
+  quote,
+  type PaymentMethod,
+  type Quote,
+} from "@/domain/pricing";
 import { createOrder } from "@/services/order.service";
 import type { Product } from "@/services/schemas";
 import { buildInstallmentOptions, type InstallmentOption } from "./installmentOptions";
@@ -62,7 +67,12 @@ const SUBMIT_ERROR_MESSAGES: Record<string, string> = {
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "setMethod":
-      return { ...state, method: action.method, submitError: null };
+      return {
+        ...state,
+        method: action.method,
+        installments: action.method === "pix" ? MIN_INSTALLMENTS : state.installments,
+        submitError: null,
+      };
     case "setInstallments":
       return { ...state, installments: action.installments, submitError: null };
     case "setEmail":
@@ -164,23 +174,31 @@ export function useCheckout(product: Product): UseCheckoutResult {
 
     dispatch({ type: "submitStart" });
 
-    const result = await createOrder({
-      productId: product.id,
-      email,
-      cpf,
-      method,
-      installments: currentQuote.installments,
-    });
+    try {
+      const result = await createOrder({
+        productId: product.id,
+        email,
+        cpf: stripCPF(cpf),
+        method,
+        installments: currentQuote.installments,
+      });
 
-    if (result.ok) {
-      dispatch({ type: "submitSuccess", orderId: result.orderId });
-      return null;
+      if (result.ok) {
+        dispatch({ type: "submitSuccess", orderId: result.orderId });
+        return null;
+      }
+
+      dispatch({
+        type: "submitFailure",
+        message: SUBMIT_ERROR_MESSAGES[result.reason],
+      });
+    } catch {
+      dispatch({
+        type: "submitFailure",
+        message: SUBMIT_ERROR_MESSAGES.unavailable,
+      });
     }
 
-    dispatch({
-      type: "submitFailure",
-      message: SUBMIT_ERROR_MESSAGES[result.reason] ?? SUBMIT_ERROR_MESSAGES.unavailable,
-    });
     return null;
   }, [allErrors, product.id, email, cpf, method, currentQuote.installments]);
 
