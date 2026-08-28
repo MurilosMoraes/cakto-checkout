@@ -23,8 +23,9 @@ com o total, e a soma das parcelas também. Quando a divisão não é exata a pr
 absorve o resto, e a interface mostra esse valor em vez de esconder. Em 7x fica
 R$ 42,48 mais 6 de R$ 42,42.
 
-`page.tsx` é Server Component e passa o card do produto e o texto de consentimento como
-children para o `CheckoutScreen`, que é o único componente cliente de fato. A tela de
+`page.tsx` é Server Component e entrega o card do produto e o texto de consentimento já
+renderizados para o `CheckoutScreen`, que é onde a interatividade começa. Markup estático
+atravessa a fronteira sem virar JavaScript no cliente. A tela de
 confirmação carrega por `next/dynamic`, já que só existe depois da compra, e a busca do
 produto fica sob `Suspense` com skeleton. No estado usei `useReducer` com o cálculo de
 preço isolado em `useMemo`, então digitar CPF não recalcula taxa.
@@ -33,7 +34,14 @@ O que deixei de fora: cliente HTTP com interceptor e retry, porque não existe H
 `services/` já isola a fronteira; React Hook Form, porque são dois campos; `clsx` e
 `tailwind-merge`, porque três linhas resolvem; e dark mode. A validação só mostra erro
 depois do blur ou de uma tentativa de envio. Como o botão é fixo no rodapé, submeter com
-campo inválido rola até o campo e foca nele, senão o clique parece não ter efeito.
+campo inválido rola até o campo e foca nele, senão o clique parece não ter efeito. Os
+métodos de pagamento são radios nativos dentro de `fieldset`, os campos ligam erro e dica
+por `aria-describedby`, e o CTA passa contraste AA nos dois estados.
+
+O que ficou de fora por tempo: simulação real do PIX com QR Code e copia-e-cola, testes
+de componente (os 44 cobrem domínio e validação, todos sem DOM), e branded types em
+`Cents` e `Bps`, que hoje são alias de `number` e não impedem alguém passar reais onde se
+espera centavos. Esse último é o que eu faria primeiro se continuasse.
 
 ### Estrutura
 
@@ -113,7 +121,7 @@ npm run dev
 Abra http://localhost:3000.
 
 ```bash
-npm test           # 41 testes
+npm test           # 44 testes
 npm run typecheck
 npm run lint
 npm run build
