@@ -60,6 +60,11 @@ describe("isValidCPF", () => {
     }
   });
 
+  it("rejeita entrada com dígitos a mais em vez de truncar", () => {
+    expect(isValidCPF("529.982.247-250")).toBe(false);
+    expect(isValidCPF("5299822472599999")).toBe(false);
+  });
+
   it("rejeita entradas incompletas ou vazias", () => {
     expect(isValidCPF("")).toBe(false);
     expect(isValidCPF("5299822472")).toBe(false);

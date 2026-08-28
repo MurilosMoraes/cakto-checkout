@@ -25,7 +25,7 @@ function checkDigit(digits: string, factor: number): number {
 }
 
 export function isValidCPF(input: string): boolean {
-  const digits = stripCPF(input);
+  const digits = input.replace(/\D/g, "");
 
   if (digits.length !== CPF_LENGTH) return false;
   if (/^(\d)\1{10}$/.test(digits)) return false;
